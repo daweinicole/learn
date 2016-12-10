@@ -1,0 +1,165 @@
+<?php
+ header("Content-type:text/html;charset=utf-8");
+	session_start();
+	if (!empty($_POST)) {
+		var_dump($_POST);
+		include("conn.php");//连接数据库
+		$name = $_POST['name'];//取得用户昵称
+		$email = $_POST['email'];//取得用户邮箱
+		$mi2 = $_POST['mi2'];//取得用户密码
+	    if(isset($_POST['sub']))//当用户点击提交时
+		{
+			    $sql = "INSERT INTO text(nicheng,users,password) VALUES('{$name}','{$email}','{$mi2}')";//SQL语句
+			    var_dump($sql);
+			    $res = $conn->exec($sql);
+			    var_dump($res);
+				if ($res) {
+					echo "<script>alert('注册成功');window.location= 'index.php';</script>";
+				}
+				
+		}
+	}
+	
+?>
+
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<head>
+<title>天使最美丽</title>
+<style type = "text/css">
+	body
+	{
+		width:600px;
+		height:360px;
+		margin-left:auto;
+		margin-right:auto;
+		border:1px red solid;
+		background-color: #FBEB97;
+		z-index: -1;
+	}
+	form
+	{
+		width:500px;
+		height:200px;
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:30px;
+		<!--border:1px red solid;-->
+	}
+	#image
+	{
+		width:200px;
+		height:80px;
+		margin-top:30px;
+		margin-left:auto;
+		margin-right:auto;
+		<!--border:1px red solid;-->
+	}
+	.one{
+		margin-left: 190px;
+		font-family: sans-serif;
+		font-size:200%;
+</style>
+
+</head>
+<body>
+<h1 class="one">天使最美丽<hr></h1>
+
+<script language = "javascript">
+	function checkform()//使用JS来验证用户输入是否符合规范
+	{
+		if(myform.name.value == "")//昵称不能为空
+		{
+			alert("昵称不能为空！");
+			myform.name.focus();
+			return false;
+		}
+		if(!myform.name.value.replace(/[^\a-\z\A-\Z]/g,''))//使用正则表达式来判断昵称
+		{
+			alert("昵称不符合规范！");
+			myform.name.focus();
+			return false;
+		}
+		if(myform.name.value.length < 4 || myform.name.value.length > 8)//当用户输入的昵称小于4或者大于8时
+		{
+			alert("昵称不符合规范！");
+			myform.name.focus();
+			return false;
+		}
+		if(myform.email.value == "")//邮箱不能为空
+		{
+			alert("邮箱必须填写！");
+			myform.email.focus();
+			return false;
+		}
+		if(myform.email.value.length < 12)//邮箱不能少于12个字符，否则不符合规范
+		{
+			alert("邮箱不符合规范！");
+			myform.email.focus();
+			return false;
+		}
+		if(myform.mi1.value == "")//密码不能为空
+		{
+			alert("密码不能为空！");
+			myform.mi1.focus();
+			return false;
+		}
+		if(myform.mi2.value == "")//密码不能为空
+		{
+			alert("密码不能为空！");
+			myform.mi2.focus();
+			return false;
+		}
+		if(!myform.mi2.value.replace(/[^\a-\z\A-\Z]/g,''))//使用正则表达式来判断密码
+		{
+			alert("密码不符合规范！");
+			myform.mi2.focus();
+			return false;
+		}
+		if(myform.mi2.value.length < 6)//如果密码小于6位
+		{
+			alert("密码不能少于6位！");
+			myform.mi2.focus();
+			return false;
+		}
+		if(myform.mi1.value != myform.mi2.value)//判断两次输入的密码是否一致
+		{
+			alert("两次输入的密码不一致！");
+			myform.mi2.focus();
+			return false;
+		}
+	}
+</script>
+
+	<div id = "image"><!--img src = "psb1.jpg" /--></div><!--加载logo-->
+	<form action = "./register.php" method = "post" name = "myform" onsubmit = "return checkform();"><!--注册表单-->
+	<center>
+		<table height = 60;>
+		<tr>
+			<td>昵称:</td>
+			<td><input type = "text" name = "name"  /><dfn>(只能由4-8位字母或数字组成)</dfn></td>
+		</tr>
+		<tr>
+			<td>Email:</td>
+			<td><input type = "email" name = "email"  /></td>
+		</tr>
+		<tr>
+			<td>密码:</td>
+			<td><input type = "password" name = "mi1"  /><dfn>(必须由大于6位的字母或数字组成)</dfn></td>
+		</tr>
+		<tr>
+			<td>确认密码:</td>
+			<td><input type = "password" name = "mi2"  /></td>
+		</tr>
+		<tr>
+			<td><input type = "submit" name = "sub" value = "注册" /></td>
+			<td><a href = "index.php">登录</a></td>
+		</tr>
+		</table>
+	</center>
+	</form>
+</body>
+</html>

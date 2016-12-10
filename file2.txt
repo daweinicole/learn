@@ -1,0 +1,112 @@
+<?php
+ header("Content-type:text/html;charset=utf-8");
+	include("conn.php");
+if (!empty($_POST)){
+	var_dump($_POST);
+	$conn=mysqli_connect("localhost","root","");
+	var_dump($conn);
+	$email = $_POST['email'];//取得用户输入的email
+	$psd = $_POST['psd'];//取得用户输入的密码
+	$sql = "SELECT users,password FROM denglu WHERE users = '$email'";//SQL查询
+	$query = mysqli_query($conn,$sql);//执行SQL语句
+	//string mysqli_error($conn);
+	var_dump($query);
+	$row = mysqli_fetch_array($query);
+	//if(!$row){
+	//	printf("Error:%s\n",mysqli_error($conn));
+	//	exit();
+	//}
+	$user = $row['users'];//将查询的结果赋值
+	$pass = $row['password'];//将查询的结果赋值
+	}
+	if(isset($_POST['denglu']))//当用户点击登录按钮时
+	{
+		if($user == $email && $pass == $psd)//验证用户名和密码是否一致
+		{
+			echo "<script>alert('登陆成功');</script>";
+		}
+		else
+		{
+			echo "<script>alert('帐户名或密码错误！');history.go(-1)</script>";//用户名和密码不一致，跳转到当前页面重新输入
+		}
+	}
+
+	
+?>
+
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<script language = "javascript"><!--使用js验证-->
+	function Checked()
+	{
+		if(myform.email.value == "")//如果Email为空
+		{
+			alert("您还没有填写登录邮箱！");
+			myform.email.focus();
+			return false;
+		}
+		if(myform.psd.value == "")//如果密码为空
+		{
+			alert("您忘记填写密码了！");
+			myform.psd.focus();
+			return false;
+		}
+	}
+</script>
+<style type = "text/css">
+	body
+	{
+		width:400px;
+		height:280px;
+		margin-left:auto;
+		margin-right:auto;
+		border:1px red solid;
+		background-color:#FCEE9E;
+		z-index: -1;
+	}
+	#image
+	{
+		width:200px;
+		height:80px;
+		margin-top:30px;
+		margin-left:100px;
+		margin-right:100px;
+		<!--border:3px red solid;-->
+	}
+	.one{
+		text-align: center;
+		font-family: sans-serif;
+		font-size:200%;
+	}
+</style>
+<head>
+<title>天使艾米丽</title>
+</head>
+<body>
+<h1 class="one">天使艾米丽</h1>
+	<div id="image"><center><!--img src = "psb1.jpg" /--></center></div><br /><!--图片logo-->
+	<center>
+	<!--登录表单-->
+	<form action="" method="post" name="myform" onsubmit="return Checked();">
+		<table>
+			<tr>
+				<td>Email:</td>
+				<td><input type="email" name="email"/></td>
+			</tr>
+			<tr>
+				<td>密码:</td>
+				<td><input type="password" name="psd"/></td>
+			</tr>
+			<tr>
+				<td><input type="submit" name="denglu" value="登录"/></td>
+				<td><a href="register.php">注册</a></td>
+			</tr>
+		</table>
+	</form>
+	<!--登录表单结束-->
+	</center>
+</body>
+</html>
